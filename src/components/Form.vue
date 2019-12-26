@@ -28,15 +28,15 @@ a {
 <template>
 <div id="form">
   <h1>{{ msg }}</h1>
-  <h3>Start By Selecting an Encryption Engine</h3>
 
   <div class="Enc-Engines">
-    <strong>Select from the list here:</strong>
+    <strong>Select a Cipher to Get Started:</strong>
 
-    <b-dropdown id="dropdown-1" text="Cipher Engines" class="m-md-2">
+    <b-dropdown v-b-popover.hover.top="'Symmetric Algorithms'" id="dropdown-1" text="Cipher Engines" class="m-md-2">
       <b-dropdown-item @click="setEngine('AES')">AES</b-dropdown-item>
       <b-dropdown-item @click="setEngine('Rij')">Rijndael</b-dropdown-item>
       <b-dropdown-item @click="setEngine('Blow')">Blowfish</b-dropdown-item>
+      <b-dropdown-item @click="setEngine('RC4')">RC4</b-dropdown-item>
     </b-dropdown>
     {{engine}}
   </div>

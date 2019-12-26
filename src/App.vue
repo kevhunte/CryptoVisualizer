@@ -2,7 +2,7 @@
 <div id="app">
   <!--<img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-  <Form msg="Crypto Options Input Form" />
+  <Form msg="Encryption Visualizer" />
 </div>
 </template>
 
