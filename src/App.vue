@@ -3,6 +3,8 @@
   <!--<img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   <Form msg="Encryption Visualizer" />
+  <!--Listener to grab form data and set cryptojs instance accordingly.
+  Instantiate engine and send to visualization component-->
 </div>
 </template>
 
