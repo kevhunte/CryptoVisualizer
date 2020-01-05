@@ -112,6 +112,7 @@ export default {
       modes: ['ECB', 'CBC', 'CTR', 'GCM', 'CFB', 'OFB'],
       form: {
         encryption: true,
+        name: '',
         keysize: null,
         blocksize: null,
         saltsize: null,
@@ -126,6 +127,7 @@ export default {
     setEngine(val) {
       this.engine = val;
       this.dropdownText = val;
+      this.form.name = val;
     },
     onReset(evt) {
       evt.preventDefault();
