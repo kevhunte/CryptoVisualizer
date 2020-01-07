@@ -141,10 +141,6 @@ a {
         </b-form>
       </div>
     </b-collapse>
-    <b-card class="mt-3" header="Form Data Result" v-if="show">
-      <pre class="m-0">{{ form }}</pre>
-      <!--Here just for debugging-->
-    </b-card>
   </div>
 </div>
 </template>
@@ -175,7 +171,6 @@ export default {
         ivsize: null,
         paddings: null
       },
-      show: false // debugging
     }
   },
   methods: {
@@ -193,12 +188,14 @@ export default {
       this.form.ivsize = null;
       this.form.ciphermode = null;
       this.form.paddings = null;
-      this.show = false;
     },
     onSubmit(evt) {
       evt.preventDefault();
       //pass up to App.vue
-      this.show = true; //debugging
+      let copy = {
+        ...this.form
+      };
+      this.$emit('cipher', copy); // passes unique copy to parent
     }
   }
 }
