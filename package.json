@@ -11,6 +11,7 @@
     "bootstrap-vue": "^2.0.4",
     "core-js": "^3.4.3",
     "vue": "^2.6.10",
+    "vue-cryptojs": "^2.1.2",
     "vuex": "^3.1.2"
   },
   "devDependencies": {

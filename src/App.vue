@@ -4,6 +4,7 @@
   <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   <Form msg="Encryption Visualizer" @cipher="initCipher" />
   {{cipherData}}
+  {{temp}}
   <!--Instantiate engine and send to visualization component here-->
 </div>
 </template>
@@ -19,13 +20,16 @@ export default {
   },
   data() {
     return {
-      cipherData: null
+      cipherData: null,
+      temp: ''
     }
   },
   methods: {
     initCipher(value) {
       console.log(value);
       this.cipherData = value;
+
+      /* Logic to implement cryptojs instances */
     }
   }
 }
