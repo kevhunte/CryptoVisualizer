@@ -36,41 +36,36 @@ a {
     <b-dropdown v-b-popover.hover.top="'Symmetric Algorithms'" id="dropdown-1" :text="dropdownText" class="m-md-2">
       <b-dropdown-item :active="engine === 'AES'" v-b-toggle.AES-1 @click="setEngine('AES')">AES</b-dropdown-item>
       <b-dropdown-item :active="engine === 'Rijndael'" v-b-toggle.Rij-1 @click="setEngine('Rijndael')">Rijndael</b-dropdown-item>
-      <b-dropdown-item :active="engine === 'Blowfish'" v-b-toggle.Blow-1 @click="setEngine('Blowfish')">Blowfish</b-dropdown-item>
-      <b-dropdown-item :active="engine === 'RC4'" v-b-toggle.RC4-1 @click="setEngine('RC4')">RC4</b-dropdown-item>
+      <b-dropdown-item :active="engine === 'Twofish'" v-b-toggle.Two-1 @click="setEngine('Twofish')">Twofish</b-dropdown-item>
     </b-dropdown>
     <!--Link multiple Id's on v-b-toggle for sequential collapses-->
     <b-collapse id="AES-1" accordion="alg-accordion" class="mt-2">
       <p class="card-text">Blurb on AES Algorithm</p>
-      <p class="card-text">AES contents Here: IV, Salt Size, Padding, Key Size</p>
-    </b-collapse>
-
-    <b-collapse id="Rij-1" accordion="alg-accordion" class="mt-2">
-      <p class="card-text">Blurb on Rijndael Algorithm</p>
+      <!--<p class="card-text">AES contents Here: IV, Salt Size, Padding, Key Size</p>-->
       <div class="form-container">
         <b-form @submit="onSubmit" @reset="onReset">
-          <b-form-group id="input-group-1" label="Key Size*:" label-for="input-1" description="All computations are done in the browser.">
-            <b-form-select id="input-1" v-model="form.keysize" :options="keysizes" required placeholder="Enter email"></b-form-select>
+          <b-form-group id="aes-group-1" label="Key Size*:" label-for="aes-1" description="All computations are done in the browser.">
+            <b-form-select id="aes-1" v-model="form.keysize" :options="keysizes" required placeholder="Enter email"></b-form-select>
           </b-form-group>
 
-          <b-form-group id="input-group-2" label="Block Size*:" label-for="input-2" description="The size of the returned output.">
-            <b-form-select id="input-2" v-model="form.blocksize" :options="blocksizes" required placeholder="Enter name"></b-form-select>
+          <!--<b-form-group id="rij-group-2" label="Block Size*:" label-for="rij-2" description="The size of the returned output.">
+            <b-form-select id="rij-2" v-model="form.blocksize" :options="blocksizes" required placeholder="Enter name"></b-form-select>
+          </b-form-group>-->
+
+          <b-form-group id="aes-group-2" label="Salt Size:" label-for="aes-2" description="The amount of random bits appended to the ciphertext.">
+            <b-form-select id="aes-2" v-model="form.saltsize" :options="sizes" placeholder="Enter name"></b-form-select>
           </b-form-group>
 
-          <b-form-group id="input-group-3" label="Salt Size:" label-for="input-3" description="The amount of random bits appended to the ciphertext.">
-            <b-form-select id="input-3" v-model="form.saltsize" :options="sizes" placeholder="Enter name"></b-form-select>
+          <b-form-group id="aes-group-3" label="Cipher Mode*:" label-for="aes-3" description="The ciphermode used for the Algorithm.">
+            <b-form-select id="aes-3" v-model="form.ciphermode" :options="modes" required></b-form-select>
           </b-form-group>
 
-          <b-form-group id="input-group-4" label="Cipher Mode*:" label-for="input-4" description="The ciphermode used for the Algorithm.">
-            <b-form-select id="input-4" v-model="form.ciphermode" :options="modes" required></b-form-select>
+          <b-form-group id="aes-group-4" v-if="this.form.ciphermode !== 'none' && this.form.ciphermode !== null" label="IV Size:" label-for="aes-4" description="The amount of bits used as the first step of this encryption mode.">
+            <b-form-select id="aes-4" v-model="form.ivsize" :options="sizes"></b-form-select>
           </b-form-group>
 
-          <b-form-group id="input-group-5" v-if="this.form.ciphermode !== 'none' && this.form.ciphermode !== null" label="IV Size*:" label-for="input-5" description="The amount of bits used as the first step of this encryption mode.">
-            <b-form-select id="input-5" v-model="form.ivsize" :options="sizes" required></b-form-select>
-          </b-form-group>
-
-          <b-form-group id="input-group-6" label="Padding Type:" label-for="input-6" description="The spacing needed between blocks.">
-            <b-form-select id="input-6" v-model="form.paddings" :options="paddingtypes"></b-form-select>
+          <b-form-group id="aes-group-4" label="Padding Type:" label-for="aes-4" description="The spacing needed between blocks.">
+            <b-form-select id="aes-4" v-model="form.paddings" :options="paddingtypes"></b-form-select>
           </b-form-group>
 
           <b-button type="submit" variant="success">Initialize Cipher</b-button>
@@ -78,13 +73,73 @@ a {
         </b-form>
       </div>
     </b-collapse>
-    <b-collapse id="Blow-1" accordion="alg-accordion" class="mt-2">
-      <p class="card-text">Blurb on Blowfish Algorithm</p>
-      <p class="card-text">Blow contents Here: IV, Salt Size, Padding, Key Size</p>
+
+    <b-collapse id="Rij-1" accordion="alg-accordion" class="mt-2">
+      <p class="card-text">Blurb on Rijndael Algorithm</p>
+      <div class="form-container">
+        <b-form @submit="onSubmit" @reset="onReset">
+          <b-form-group id="rij-group-1" label="Key Size*:" label-for="rij-1" description="All computations are done in the browser.">
+            <b-form-select id="rij-1" v-model="form.keysize" :options="keysizes" required placeholder="Enter email"></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="rij-group-2" label="Block Size*:" label-for="rij-2" description="The size of the returned output.">
+            <b-form-select id="rij-2" v-model="form.blocksize" :options="blocksizes" required placeholder="Enter name"></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="rij-group-3" label="Salt Size:" label-for="rij-3" description="The amount of random bits appended to the ciphertext.">
+            <b-form-select id="rij-3" v-model="form.saltsize" :options="sizes" placeholder="Enter name"></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="rij-group-4" label="Cipher Mode*:" label-for="rij-4" description="The ciphermode used for the Algorithm.">
+            <b-form-select id="rij-4" v-model="form.ciphermode" :options="modes" required></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="rij-group-5" v-if="this.form.ciphermode !== 'none' && this.form.ciphermode !== null" label="IV Size:" label-for="rij-5" description="The amount of bits used as the first step of this encryption mode.">
+            <b-form-select id="rij-5" v-model="form.ivsize" :options="sizes"></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="rij-group-6" label="Padding Type:" label-for="rij-6" description="The spacing needed between blocks.">
+            <b-form-select id="rij-6" v-model="form.paddings" :options="paddingtypes"></b-form-select>
+          </b-form-group>
+
+          <b-button type="submit" variant="success">Initialize Cipher</b-button>
+          <b-button type="reset" variant="danger">Reset</b-button>
+        </b-form>
+      </div>
     </b-collapse>
-    <b-collapse id="RC4-1" accordion="alg-accordion" class="mt-2">
-      <p class="card-text">Blurb on RC4 Algorithm</p>
-      <p class="card-text">RC4 contents Here: IV, Salt Size, Padding, Key Size</p>
+    <b-collapse id="Two-1" accordion="alg-accordion" class="mt-2">
+      <p class="card-text">Blurb on Twofish Algorithm</p>
+      <p class="card-text">Twofish contents Here: IV, Salt Size, Padding, Key Size</p>
+      <div class="form-container">
+        <b-form @submit="onSubmit" @reset="onReset">
+          <b-form-group id="two-group-1" label="Key Size*:" label-for="two-1" description="All computations are done in the browser.">
+            <b-form-select id="two-1" v-model="form.keysize" :options="[128,256]" required placeholder="Enter email"></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="two-group-2" label="Block Size*:" label-for="two-2" description="The size of the returned output.">
+            <b-form-select id="two-2" v-model="form.blocksize" :options="[128]" required placeholder="Enter name"></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="two-group-3" label="Salt Size:" label-for="two-3" description="The amount of random bits appended to the ciphertext.">
+            <b-form-select id="two-3" v-model="form.saltsize" :options="sizes" placeholder="Enter name"></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="two-group-4" label="Cipher Mode*:" label-for="two-4" description="The ciphermode used for the Algorithm.">
+            <b-form-select id="two-4" v-model="form.ciphermode" :options="modes" required></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="two-group-5" v-if="this.form.ciphermode !== 'none' && this.form.ciphermode !== null" label="IV Size:" label-for="two-5" description="The amount of bits used as the first step of this encryption mode.">
+            <b-form-select id="two-5" v-model="form.ivsize" :options="sizes"></b-form-select>
+          </b-form-group>
+
+          <b-form-group id="two-group-6" label="Padding Type:" label-for="two-6" description="The spacing needed between blocks.">
+            <b-form-select id="two-6" v-model="form.paddings" :options="paddingtypes"></b-form-select>
+          </b-form-group>
+
+          <b-button type="submit" variant="success">Initialize Cipher</b-button>
+          <b-button type="reset" variant="danger">Reset</b-button>
+        </b-form>
+      </div>
     </b-collapse>
     <b-card class="mt-3" header="Form Data Result" v-if="show">
       <pre class="m-0">{{ form }}</pre>
@@ -106,10 +161,10 @@ export default {
       engine: '',
       dropdownText: 'Cipher Engines',
       sizes: [16, 32],
-      keysizes: [128, 256],
-      blocksizes: [128, 192, 256],
-      paddingtypes: ['PKCS7', 'ANSIX923'],
-      modes: ['ECB', 'CBC', 'CTR', 'GCM', 'CFB', 'OFB'],
+      keysizes: [128, 192, 256],
+      blocksizes: [128, 256],
+      paddingtypes: ['none', 'PKCS7', 'ANSIX923'],
+      modes: ['none', 'ECB', 'CBC', 'CTR', 'GCM', 'CFB', 'OFB'],
       form: {
         encryption: true,
         name: '',
