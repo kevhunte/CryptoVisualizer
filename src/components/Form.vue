@@ -160,7 +160,7 @@ export default {
       keysizes: [128, 192, 256],
       blocksizes: [128, 256],
       paddingtypes: ['none', 'PKCS7', 'ANSIX923'],
-      modes: ['none', 'ECB', 'CBC', 'CTR', 'GCM', 'CFB', 'OFB'],
+      modes: ['ECB', 'CBC', 'CTR', 'CFB', 'OFB'],
       form: {
         encryption: true,
         name: '',

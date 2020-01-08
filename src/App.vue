@@ -26,14 +26,23 @@ export default {
       CryptoJS
     }
   },
+  mounted: function() {
+    this.myEncrypt();
+  },
   methods: {
     initCipher(value) {
       console.log(value);
       this.cipherData = value;
-      /*let output = this.CryptoJS.AES.encrypt("bananas", "password").toString();
-      console.log(output);*/
       //this.temp = val;
       /* Logic to implement cryptojs instances */
+    },
+    myEncrypt() {
+      const key = 'password';
+      const phrase = 'bananas';
+      //var output = CryptoJS.AES.encrypt("bananas", "password").toString();
+      console.log('SHA1 - ', CryptoJS.SHA1(phrase).toString());
+      console.log(CryptoJS);
+      console.log(CryptoJS.AES.encrypt(phrase, key));
     }
   }
 }
