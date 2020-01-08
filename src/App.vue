@@ -10,10 +10,11 @@
 </template>
 
 <script>
-import Form from './components/Form.vue'
+/*eslint-disable*/
+import Form from './components/Form.vue';
+import CryptoJS from "crypto-js";
 
 export default {
-  /*eslint-disable*/
   name: 'app',
   components: {
     Form
@@ -21,14 +22,17 @@ export default {
   data() {
     return {
       cipherData: null,
-      temp: ''
+      temp: '',
+      CryptoJS
     }
   },
   methods: {
     initCipher(value) {
       console.log(value);
       this.cipherData = value;
-
+      /*let output = this.CryptoJS.AES.encrypt("bananas", "password").toString();
+      console.log(output);*/
+      //this.temp = val;
       /* Logic to implement cryptojs instances */
     }
   }
