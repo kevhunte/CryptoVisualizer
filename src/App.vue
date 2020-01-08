@@ -22,12 +22,11 @@ export default {
   data() {
     return {
       cipherData: null,
-      temp: '',
-      CryptoJS
+      temp: ''
     }
   },
   mounted: function() {
-    this.myEncrypt();
+    this.Encrypt();
   },
   methods: {
     initCipher(value) {
@@ -36,13 +35,13 @@ export default {
       //this.temp = val;
       /* Logic to implement cryptojs instances */
     },
-    myEncrypt() {
+    Encrypt() {
       const key = 'password';
       const phrase = 'bananas';
       //var output = CryptoJS.AES.encrypt("bananas", "password").toString();
-      console.log('SHA1 - ', CryptoJS.SHA1(phrase).toString());
-      console.log(CryptoJS);
-      console.log(CryptoJS.AES.encrypt(phrase, key));
+      //console.log('SHA1 - ', CryptoJS.SHA1(phrase).toString());
+      //console.log(CryptoJS);
+      console.log('AES No Params', CryptoJS.AES.encrypt(phrase, key).toString());
     }
   }
 }
