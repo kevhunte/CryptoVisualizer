@@ -26,7 +26,7 @@ a {
 <div id="form">
   <h1>{{ msg }}</h1>
 
-  <div v-if="output !== '' ">
+  <div v-if="this.local_output !== '' ">
     <strong>Output</strong><br>
     <strong id="iv">{{iv}}</strong><strong id="salt">{{salt}}</strong><strong id="output">{{output}}</strong>
   </div>
@@ -110,6 +110,11 @@ export default {
     salt: String
   },
   components: {},
+  watch: {
+    output: function() {
+      this.local_output = this.output;
+    }
+  },
   data() {
     return {
       dropdownText: 'Cipher Engines',
@@ -118,6 +123,7 @@ export default {
       blocksizes: [64, 128, 256],
       paddingtypes: ['Zeroes', 'PKCS7', 'ANSIX923'],
       modes: ['ECB', 'CBC', 'CTR', 'CFB', 'OFB'],
+      local_output: '',
       form: {
         encryption: true,
         name: '',
@@ -167,6 +173,7 @@ export default {
       this.form.paddings = null;
       this.form.payload = '';
       this.form.key = '';
+      this.local_output = '';
     },
     onSubmit(evt) {
       evt.preventDefault();

@@ -51,12 +51,15 @@ export default {
       const ivsize = body.ivsize;
       const padding = body.paddings;
       //make iv / salt
-      //choose algorithm
-      const output = CryptoJS.AES.encrypt(payload, key).toString();
-
-      //const output = CryptoJS.TripleDES.encrypt(payload, key).toString();
-
-      //const output = CryptoJS.Rabbit.encrypt(payload, key).toString();
+      //set mode and padding
+      let output;
+      if (name === 'AES') {
+        output = CryptoJS.AES.encrypt(payload, key).toString();
+      } else if (name === '3DES') {
+        output = CryptoJS.TripleDES.encrypt(payload, key).toString();
+      } else {
+        output = CryptoJS.Rabbit.encrypt(payload, key).toString();
+      }
 
       this.temp = output;
       this.iv;
@@ -73,9 +76,15 @@ export default {
       const ivsize = body.ivsize;
       const padding = body.paddings;
       //parse iv / salt
-      //choose algorithm
-      const output = CryptoJS.AES.decrypt(payload, key).toString();
-
+      //set mode and padding
+      let output;
+      if (name === 'AES') {
+        output = CryptoJS.AES.decrypt(payload, key).toString();
+      } else if (name === '3DES') {
+        output = CryptoJS.TripleDES.decrypt(payload, key).toString();
+      } else {
+        output = CryptoJS.Rabbit.decrypt(payload, key).toString();
+      }
       //const output = CryptoJS.TripleDES.decrypt(payload, key).toString();
 
       //const output = CryptoJS.Rabbit.decrypt(payload, key).toString();
