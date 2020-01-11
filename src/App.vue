@@ -2,13 +2,13 @@
 <div id="app">
   <!--<img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-  <Form msg="Encryption Visualizer" @cipher="initCipher" />
+  <Form msg="Encryption Visualizer" :output="this.temp" :iv="this.iv" :salt="this.salt" @cipher="initCipher" />
 
-  <div>
-    <b-form-textarea v-if="temp !== '' " id="cipher-output" v-model="temp" readonly label="output" rows="3" max-rows="6"></b-form-textarea>
-  </div>
-  <!--{{cipherData}}
-  Make Footer-->
+  <!--<div v-if="temp !== '' ">
+    <strong>Output</strong><br>
+    <strong id="iv">{{this.iv}}</strong><strong id="salt">{{this.salt}}</strong><strong id="output">{{this.temp}}</strong>
+  </div>-->
+  <!--Make Footer-->
 </div>
 </template>
 
@@ -24,28 +24,66 @@ export default {
   },
   data() {
     return {
-      cipherData: null,
-      temp: ''
+      temp: '',
+      iv: '',
+      salt: ''
     }
   },
-  mounted: function() {
-    //this.Encrypt();
-  },
+  mounted: function() {},
   methods: {
     initCipher(value) {
+      const data = value;
       console.log(value);
-      this.cipherData = value;
-      //this.temp = val;
-      /* Logic to implement cryptojs instances */
-    },
-    Encrypt() {
-      const key = 'password';
-      const phrase = 'bananas';
-      //var output = CryptoJS.AES.encrypt("bananas", "password").toString();
-      //console.log('SHA1 - ', CryptoJS.SHA1(phrase).toString());
       console.log(CryptoJS);
-      this.temp = CryptoJS.AES.encrypt(phrase, key).toString();
-      console.log('AES No Params', this.temp);
+      if (value.encryption) { // encrypt
+        this.Encrypt(data);
+      } else { // decrypt
+        this.Decrypt(data);
+      }
+    },
+    Encrypt(body) {
+      const key = body.key;
+      const payload = body.payload;
+      const keysize = body.keysize;
+      const name = body.name;
+      const blocksize = body.blocksize;
+      const saltsize = body.saltsize;
+      const ivsize = body.ivsize;
+      const padding = body.paddings;
+      //make iv / salt
+      //choose algorithm
+      const output = CryptoJS.AES.encrypt(payload, key).toString();
+
+      //const output = CryptoJS.TripleDES.encrypt(payload, key).toString();
+
+      //const output = CryptoJS.Rabbit.encrypt(payload, key).toString();
+
+      this.temp = output;
+      this.iv;
+      this.salt;
+      //console.log('AES No Params', this.temp);
+    },
+    Decrypt(body) {
+      const key = body.key;
+      const payload = body.payload;
+      const keysize = body.keysize;
+      const name = body.name;
+      const blocksize = body.blocksize;
+      const saltsize = body.saltsize;
+      const ivsize = body.ivsize;
+      const padding = body.paddings;
+      //parse iv / salt
+      //choose algorithm
+      const output = CryptoJS.AES.decrypt(payload, key).toString();
+
+      //const output = CryptoJS.TripleDES.decrypt(payload, key).toString();
+
+      //const output = CryptoJS.Rabbit.decrypt(payload, key).toString();
+
+      this.temp = output;
+      this.iv;
+      this.salt;
+      //console.log('AES No Params', this.temp);
     }
   }
 }
@@ -59,5 +97,17 @@ export default {
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+}
+#output {
+    /*purple*/
+    color: #d63aff;
+}
+#iv {
+    /*blue color*/
+    color: #00b9f1;
+}
+#salt {
+    /*red color*/
+    color: #fb015b;
 }
 </style>

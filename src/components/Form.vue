@@ -26,31 +26,38 @@ a {
 <div id="form">
   <h1>{{ msg }}</h1>
 
+  <div v-if="output !== '' ">
+    <strong>Output</strong><br>
+    <strong id="iv">{{iv}}</strong><strong id="salt">{{salt}}</strong><strong id="output">{{output}}</strong>
+  </div>
+  <br>
+
   <div class="Enc-Engines">
     <b-form-radio-group label="Input/Output" v-model="form.encryption" :options="[{text:'Encryption',value:true},{text:'Decryption',value:false}]" plain name="enc-radios">
     </b-form-radio-group>
-    <div id="aes-group" class="w-responsive text-center mx-auto p-3 mt-2">
-      <b-button-group>
-        <b-button @click="setData('AES',128)" variant="primary">AES-128</b-button>
-        <b-button @click="setData('AES',192)" variant="primary">AES-192</b-button>
-        <b-button @click="setData('AES',256)" variant="primary">AES-256</b-button>
-      </b-button-group>
-    </div>
+    <div id="alg-groups">
+      <div id="aes-group" class="w-responsive text-center mx-auto p-3 mt-2">
+        <b-button-group>
+          <b-button @click="setData('AES',128)" variant="primary">AES-128</b-button>
+          <b-button @click="setData('AES',192)" variant="primary">AES-192</b-button>
+          <b-button @click="setData('AES',256)" variant="primary">AES-256</b-button>
+        </b-button-group>
+      </div>
 
-    <div id="3des-group" class="w-responsive text-center mx-auto p-3 mt-2">
-      <b-button-group>
-        <b-button @click="setData('3DES',56)" variant="info">3DES-56</b-button>
-        <b-button @click="setData('3DES',112)" variant="info">3DES-112</b-button>
-        <b-button @click="setData('3DES',168)" variant="info">3DES-168</b-button>
-      </b-button-group>
-    </div>
+      <div id="3des-group" class="w-responsive text-center mx-auto p-3 mt-2">
+        <b-button-group>
+          <b-button @click="setData('3DES',56)" variant="info">3DES-56</b-button>
+          <b-button @click="setData('3DES',112)" variant="info">3DES-112</b-button>
+          <b-button @click="setData('3DES',168)" variant="info">3DES-168</b-button>
+        </b-button-group>
+      </div>
 
-    <div id="rabbit-group" class="w-responsive text-center mx-auto p-3 mt-2">
-      <b-button-group>
-        <b-button @click="setData('Rabbit',128)" variant="outline-primary">Rabbit</b-button>
-      </b-button-group>
+      <div id="rabbit-group" class="w-responsive text-center mx-auto p-3 mt-2">
+        <b-button-group>
+          <b-button @click="setData('Rabbit',128)" variant="outline-primary">Rabbit</b-button>
+        </b-button-group>
+      </div>
     </div>
-
     <div id="algorithm-options" class="w-responsive text-center mx-auto p-3 mt-2">
       <b-button-group>
         <b-dropdown right text="IV Size">
@@ -97,7 +104,10 @@ a {
 export default {
   name: 'Form',
   props: {
-    msg: String
+    msg: String,
+    output: String,
+    iv: String,
+    salt: String
   },
   components: {},
   data() {
