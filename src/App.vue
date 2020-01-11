@@ -3,9 +3,12 @@
   <!--<img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   <Form msg="Encryption Visualizer" @cipher="initCipher" />
-  {{cipherData}}
-  {{temp}}
-  <!--Instantiate engine and send to visualization component here-->
+
+  <div>
+    <b-form-textarea v-if="temp !== '' " id="cipher-output" v-model="temp" readonly label="output" rows="3" max-rows="6"></b-form-textarea>
+  </div>
+  <!--{{cipherData}}
+  Make Footer-->
 </div>
 </template>
 
@@ -26,7 +29,7 @@ export default {
     }
   },
   mounted: function() {
-    this.Encrypt();
+    //this.Encrypt();
   },
   methods: {
     initCipher(value) {
@@ -40,8 +43,9 @@ export default {
       const phrase = 'bananas';
       //var output = CryptoJS.AES.encrypt("bananas", "password").toString();
       //console.log('SHA1 - ', CryptoJS.SHA1(phrase).toString());
-      //console.log(CryptoJS);
-      console.log('AES No Params', CryptoJS.AES.encrypt(phrase, key).toString());
+      console.log(CryptoJS);
+      this.temp = CryptoJS.AES.encrypt(phrase, key).toString();
+      console.log('AES No Params', this.temp);
     }
   }
 }
