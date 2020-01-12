@@ -20,15 +20,35 @@ li {
 a {
     color: #42b983;
 }
+
+#output-container {
+    overflow-x: auto;
+    background: #2c3e50;
+    text-align: center;
+}
+#output {
+    /*purple*/
+    color: #d63aff;
+}
+#iv {
+    /*blue*/
+    color: #00b9f1;
+}
+#salt {
+    /*red*/
+    color: #fb015b;
+}
 </style>
 
 <template>
 <div id="form">
   <h1>{{ msg }}</h1>
 
-  <div v-if="this.local_output !== '' ">
-    <strong>Output</strong><br>
-    <strong id="iv">{{iv}}</strong><strong id="salt">{{salt}}</strong><strong id="output">{{output}}</strong>
+  <div id="output-container" v-if="this.local_output !== '' " class="w-responsive text-center mx-auto p-3 mt-2">
+    <strong style="color: white;">Output:</strong><br>
+    <strong id="iv">{{iv}}</strong>
+    <strong id="salt">{{salt}}</strong>
+    <strong id="output">{{output}}</strong>
   </div>
   <br>
 
@@ -59,12 +79,12 @@ a {
       </div>
     </div>
     <div id="algorithm-options" class="w-responsive text-center mx-auto p-3 mt-2">
-      <b-button-group>
+      <b-button-group v-b-tooltip.hover title="Will appear in red text">
         <b-dropdown right text="IV Size">
           <b-dropdown-item :active="form.ivsize === i" @click="setVal('iv', i)" v-for="i in sizes" :key="i">{{i}} Bits</b-dropdown-item>
         </b-dropdown>
       </b-button-group>
-      <b-button-group>
+      <b-button-group v-b-tooltip.hover title="Will appear in blue text">
         <b-dropdown right text="Salt Size">
           <b-dropdown-item :active="form.saltsize === s" @click="setVal('salt', s)" v-for="s in sizes" :key="s">{{s}} Bits</b-dropdown-item>
         </b-dropdown>
