@@ -34,7 +34,7 @@ export default {
     initCipher(value) {
       const data = value;
       console.log(value);
-      console.log(CryptoJS);
+      //console.log(CryptoJS);
       if (value.encryption) { // encrypt
         this.Encrypt(data);
       } else { // decrypt
@@ -50,18 +50,36 @@ export default {
       const saltsize = body.saltsize;
       const ivsize = body.ivsize;
       const padding = body.paddings;
+      let _iv = CryptoJS.lib.WordArray.random(ivsize);
+      let _salt = CryptoJS.lib.WordArray.random(saltsize);;
       //make iv / salt
-      //choose algorithm
-      const output = CryptoJS.AES.encrypt(payload, key).toString();
+      //set mode and padding
+      var output;
+      if (name === 'AES') {
+        output = CryptoJS.AES.encrypt(payload, key, {
+          iv: _iv,
+          salt: _salt
+        });
+      } else if (name === '3DES') {
+        output = CryptoJS.TripleDES.encrypt(payload, key, {
+          iv: _iv,
+          salt: _salt
+        });
+      } else {
+        output = CryptoJS.Rabbit.encrypt(payload, key, {
+          iv: _iv,
+          salt: _salt
+        });
+      }
 
-      //const output = CryptoJS.TripleDES.encrypt(payload, key).toString();
+      /*console.log("text", output.ciphertext.toString());
+      console.log("iv", output.iv.toString());
+      console.log("salt", output.salt.toString());*/
 
-      //const output = CryptoJS.Rabbit.encrypt(payload, key).toString();
 
-      this.temp = output;
-      this.iv;
-      this.salt;
-      //console.log('AES No Params', this.temp);
+      this.temp = output.ciphertext.toString();
+      this.iv = output.iv.toString();
+      this.salt = output.salt.toString();
     },
     Decrypt(body) {
       const key = body.key;
@@ -72,17 +90,25 @@ export default {
       const saltsize = body.saltsize;
       const ivsize = body.ivsize;
       const padding = body.paddings;
+      let _iv;
+      let _salt;
       //parse iv / salt
-      //choose algorithm
-      const output = CryptoJS.AES.decrypt(payload, key).toString();
-
+      //set mode and padding
+      let output;
+      if (name === 'AES') {
+        output = CryptoJS.AES.decrypt(payload, key).toString();
+      } else if (name === '3DES') {
+        output = CryptoJS.TripleDES.decrypt(payload, key).toString();
+      } else {
+        output = CryptoJS.Rabbit.decrypt(payload, key).toString();
+      }
       //const output = CryptoJS.TripleDES.decrypt(payload, key).toString();
 
       //const output = CryptoJS.Rabbit.decrypt(payload, key).toString();
 
-      this.temp = output;
-      this.iv;
-      this.salt;
+      this.temp = output.toString();
+      this.iv = _iv.toString();
+      this.salt = _salt.toString();
       //console.log('AES No Params', this.temp);
     }
   }
@@ -97,17 +123,5 @@ export default {
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
-}
-#output {
-    /*purple*/
-    color: #d63aff;
-}
-#iv {
-    /*blue color*/
-    color: #00b9f1;
-}
-#salt {
-    /*red color*/
-    color: #fb015b;
 }
 </style>
