@@ -93,22 +93,24 @@ export default {
       let _salt;
       //parse iv / salt
       //set mode and padding
-      let output;
+      let output; // payload needs to come as object with iv and salt
       if (name === 'AES') {
-        output = CryptoJS.AES.decrypt(payload, key).toString();
+        output = CryptoJS.AES.decrypt(payload, key);
       } else if (name === '3DES') {
-        output = CryptoJS.TripleDES.decrypt(payload, key).toString();
+        output = CryptoJS.TripleDES.decrypt(payload, key);
       } else {
-        output = CryptoJS.Rabbit.decrypt(payload, key).toString();
+        output = CryptoJS.Rabbit.decrypt(payload, key);
       }
-      //const output = CryptoJS.TripleDES.decrypt(payload, key).toString();
 
-      //const output = CryptoJS.Rabbit.decrypt(payload, key).toString();
+      console.log(output);
 
-      this.temp = output.ciphertext.toString();
-      //this.iv = output.iv.toString();
-      //this.salt = output.salt.toString();
-      //console.log('AES No Params', this.temp);
+      if (output) {
+        this.temp = output.toString(CryptoJS.enc.Utf8);
+        //this.iv = output.iv.toString();
+        //this.salt = output.salt.toString();
+        //console.log('AES No Params', this.temp);
+      }
+
     }
   }
 }
