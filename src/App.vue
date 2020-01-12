@@ -105,9 +105,9 @@ export default {
 
       //const output = CryptoJS.Rabbit.decrypt(payload, key).toString();
 
-      this.temp = output.toString();
-      this.iv = _iv.toString();
-      this.salt = _salt.toString();
+      this.temp = output.ciphertext.toString();
+      //this.iv = output.iv.toString();
+      //this.salt = output.salt.toString();
       //console.log('AES No Params', this.temp);
     }
   }
