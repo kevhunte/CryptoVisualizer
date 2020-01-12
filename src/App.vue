@@ -54,6 +54,7 @@ export default {
       let _salt = CryptoJS.lib.WordArray.random(saltsize);;
       //make iv / salt
       //set mode and padding
+
       var output;
       if (name === 'AES') {
         output = CryptoJS.AES.encrypt(payload, key, {
@@ -75,7 +76,6 @@ export default {
       /*console.log("text", output.ciphertext.toString());
       console.log("iv", output.iv.toString());
       console.log("salt", output.salt.toString());*/
-
 
       this.temp = output.ciphertext.toString();
       this.iv = output.iv.toString();
