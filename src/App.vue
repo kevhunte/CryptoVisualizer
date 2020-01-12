@@ -76,7 +76,6 @@ export default {
       console.log("iv", output.iv.toString());
       console.log("salt", output.salt.toString());*/
 
-
       this.temp = output.ciphertext.toString();
       this.iv = output.iv.toString();
       this.salt = output.salt.toString();
