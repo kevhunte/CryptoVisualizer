@@ -172,6 +172,7 @@ export default {
       this.form.payload = '';
       this.form.key = '';
       this.local_output = '';
+      this.selected = null;
     },
     onSubmit(evt) {
       evt.preventDefault();
