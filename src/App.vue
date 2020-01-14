@@ -4,10 +4,6 @@
   <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   <Form msg="Encryption Visualizer" :output="this.temp" :iv="this.iv" :salt="this.salt" @cipher="initCipher" />
 
-  <!--<div v-if="temp !== '' ">
-    <strong>Output</strong><br>
-    <strong id="iv">{{this.iv}}</strong><strong id="salt">{{this.salt}}</strong><strong id="output">{{this.temp}}</strong>
-  </div>-->
   <!--Make Footer-->
 </div>
 </template>
@@ -37,8 +33,6 @@ export default {
       //console.log(CryptoJS);
       if (value.encryption) { // encrypt
         this.Encrypt(data);
-      } else { // decrypt
-        this.Decrypt(data);
       }
     },
     Encrypt(body) {
@@ -46,29 +40,52 @@ export default {
       const payload = body.payload;
       const keysize = body.keysize;
       const name = body.name;
-      const blocksize = body.blocksize;
-      const saltsize = body.saltsize;
       const ivsize = body.ivsize;
       const padding = body.paddings;
+      const cm = body.ciphermode;
       let _iv = CryptoJS.lib.WordArray.random(ivsize);
-      let _salt = CryptoJS.lib.WordArray.random(saltsize);;
-      //make iv / salt
-      //set mode and padding
+      let mode;
+      let pad;
+      if (padding == 'PKCS7') {
+        pad = CryptoJS.pad.Pkcs7;
+      } else if (padding == 'ANSIX923') {
+        pad = CryptoJS.pad.AnsiX923;
+      } else if (padding == 'Zeroes') {
+        pad = CryptoJS.pad.ZeroPadding;
+      } else {
+        pad = CryptoJS.pad.NoPadding;
+      }
+
+      if (cm == 'CFB') {
+        mode = CryptoJS.mode.CFB;
+      } else if (cm == 'OFB') {
+        mode = CryptoJS.mode.OFB;
+      } else if (cm == 'ECB') {
+        mode = CryptoJS.mode.ECB;
+      } else if (cm == 'CTR') {
+        mode = CryptoJS.mode.CTR;
+      } else {
+        mode = CryptoJS.mode.CBC;
+      }
+      //set mode
       var output;
       if (name === 'AES') {
         output = CryptoJS.AES.encrypt(payload, key, {
           iv: _iv,
-          salt: _salt
+          padding: pad,
+          mode: mode
         });
       } else if (name === '3DES') {
         output = CryptoJS.TripleDES.encrypt(payload, key, {
           iv: _iv,
-          salt: _salt
+          padding: pad,
+          mode: mode
         });
       } else {
         output = CryptoJS.Rabbit.encrypt(payload, key, {
           iv: _iv,
-          salt: _salt
+          padding: pad,
+          mode: mode
         });
       }
 
@@ -79,38 +96,6 @@ export default {
       this.temp = output.ciphertext.toString();
       this.iv = output.iv.toString();
       this.salt = output.salt.toString();
-    },
-    Decrypt(body) {
-      const key = body.key;
-      const payload = body.payload;
-      const keysize = body.keysize;
-      const name = body.name;
-      const blocksize = body.blocksize;
-      const saltsize = body.saltsize;
-      const ivsize = body.ivsize;
-      const padding = body.paddings;
-      let _iv;
-      let _salt;
-      //parse iv / salt
-      //set mode and padding
-      let output; // payload needs to come as object with iv and salt
-      if (name === 'AES') {
-        output = CryptoJS.AES.decrypt(payload, key);
-      } else if (name === '3DES') {
-        output = CryptoJS.TripleDES.decrypt(payload, key);
-      } else {
-        output = CryptoJS.Rabbit.decrypt(payload, key);
-      }
-
-      console.log(output);
-
-      if (output) {
-        this.temp = output.toString(CryptoJS.enc.Utf8);
-        //this.iv = output.iv.toString();
-        //this.salt = output.salt.toString();
-        //console.log('AES No Params', this.temp);
-      }
-
     }
   }
 }

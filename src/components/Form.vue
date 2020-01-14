@@ -45,22 +45,20 @@ a {
   <h1>{{ msg }}</h1>
 
   <div id="output-container" v-if="this.local_output !== '' " class="w-responsive text-center mx-auto p-3 mt-2">
-    <strong style="color: white;">Output:</strong><br>
-    <strong id="iv">{{iv}}</strong>
-    <strong id="salt">{{salt}}</strong>
-    <strong id="output">{{output}}</strong>
+    <strong style="color: white;">Output:</strong><br><br>
+    <strong id="iv" v-b-tooltip.hover title="IV">{{iv}}</strong>
+    <strong id="salt" v-b-tooltip.hover title="Salt">{{salt}}</strong>
+    <strong id="output" v-b-tooltip.hover title="Ciphertext">{{output}}</strong>
   </div>
   <br>
 
   <div class="Enc-Engines">
-    <b-form-radio-group label="Input/Output" v-model="form.encryption" :options="[{text:'Encryption',value:true},{text:'Decryption',value:false}]" plain name="enc-radios">
-    </b-form-radio-group>
     <div id="alg-groups">
       <div id="aes-group" class="w-responsive text-center mx-auto p-3 mt-2">
         <b-button-group>
-          <b-button @click="setData('AES',128)" variant="primary">AES-128</b-button>
-          <b-button @click="setData('AES',192)" variant="primary">AES-192</b-button>
-          <b-button @click="setData('AES',256)" variant="primary">AES-256</b-button>
+          <b-button @click="setData('AES',128/32)" variant="primary">AES-128</b-button>
+          <b-button @click="setData('AES',192/32)" variant="primary">AES-192</b-button>
+          <b-button @click="setData('AES',256/32)" variant="primary">AES-256</b-button>
         </b-button-group>
       </div>
 
@@ -79,25 +77,14 @@ a {
       </div>
     </div>
     <div id="algorithm-options" class="w-responsive text-center mx-auto p-3 mt-2">
-      <b-button-group v-b-tooltip.hover title="Will appear in red text">
+      <b-button-group>
         <b-dropdown right text="IV Size">
           <b-dropdown-item :active="form.ivsize === i" @click="setVal('iv', i)" v-for="i in sizes" :key="i">{{i}} Bits</b-dropdown-item>
         </b-dropdown>
       </b-button-group>
-      <b-button-group v-b-tooltip.hover title="Will appear in blue text">
-        <b-dropdown right text="Salt Size">
-          <b-dropdown-item :active="form.saltsize === s" @click="setVal('salt', s)" v-for="s in sizes" :key="s">{{s}} Bits</b-dropdown-item>
-        </b-dropdown>
-      </b-button-group>
-      <br><br>
       <b-button-group>
         <b-dropdown right text="Cipher Mode">
           <b-dropdown-item :active="form.ciphermode === m" @click="setVal('ciph', m)" v-for="m in modes" :key="m">{{m}}</b-dropdown-item>
-        </b-dropdown>
-      </b-button-group>
-      <b-button-group>
-        <b-dropdown right text="Block Size">
-          <b-dropdown-item :active="form.blocksize === b" @click="setVal('block', b)" v-for="b in blocksizes" :key="b">{{b}} Bits</b-dropdown-item>
         </b-dropdown>
       </b-button-group>
       <b-button-group>
@@ -137,10 +124,7 @@ export default {
   },
   data() {
     return {
-      dropdownText: 'Cipher Engines',
       sizes: [16, 32, 64],
-      keysizes: [128, 192, 256],
-      blocksizes: [64, 128, 256],
       paddingtypes: ['Zeroes', 'PKCS7', 'ANSIX923'],
       modes: ['ECB', 'CBC', 'CTR', 'CFB', 'OFB'],
       local_output: '',
@@ -148,8 +132,6 @@ export default {
         encryption: true,
         name: '',
         keysize: null,
-        blocksize: null,
-        saltsize: null,
         ciphermode: null,
         ivsize: null,
         paddings: null,
@@ -165,12 +147,8 @@ export default {
     },
     setVal(name, val) {
       let f = this.form;
-      if (name === 'block') {
-        f.blocksize = val;
-      } else if (name === 'iv') {
+      if (name === 'iv') {
         f.ivsize = val;
-      } else if (name === 'salt') {
-        f.saltsize = val;
       } else if (name === 'ciph') {
         f.ciphermode = val;
       } else if (name === 'pad') {
@@ -186,8 +164,6 @@ export default {
       this.form.encryption = true;
       this.form.name = '';
       this.form.keysize = null;
-      this.form.blocksize = null;
-      this.form.saltsize = null;
       this.form.ivsize = null;
       this.form.ciphermode = null;
       this.form.paddings = null;
