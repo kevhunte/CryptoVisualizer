@@ -56,23 +56,23 @@ a {
     <div id="alg-groups">
       <div id="aes-group" class="w-responsive text-center mx-auto p-3 mt-2">
         <b-button-group>
-          <b-button @click="setData('AES',128/32)" variant="primary">AES-128</b-button>
-          <b-button @click="setData('AES',192/32)" variant="primary">AES-192</b-button>
-          <b-button @click="setData('AES',256/32)" variant="primary">AES-256</b-button>
+          <b-button @click="setData('AES',128/32)" :variant="selected == 128/32 ? 'primary' : 'outline-primary'">AES-128</b-button>
+          <b-button @click="setData('AES',192/32)" :variant="selected == 192/32 ? 'primary' : 'outline-primary'">AES-192</b-button>
+          <b-button @click="setData('AES',256/32)" :variant="selected == 256/32 ? 'primary' : 'outline-primary'">AES-256</b-button>
         </b-button-group>
       </div>
 
       <div id="3des-group" class="w-responsive text-center mx-auto p-3 mt-2">
         <b-button-group>
-          <b-button @click="setData('3DES',56)" variant="info">3DES-56</b-button>
-          <b-button @click="setData('3DES',112)" variant="info">3DES-112</b-button>
-          <b-button @click="setData('3DES',168)" variant="info">3DES-168</b-button>
+          <b-button @click="setData('3DES',56)" :variant="selected == 56 ? 'info' : 'outline-info'">3DES-56</b-button>
+          <b-button @click="setData('3DES',112)" :variant="selected == 112 ? 'info' : 'outline-info'">3DES-112</b-button>
+          <b-button @click="setData('3DES',168)" :variant="selected == 168 ? 'info' : 'outline-info'">3DES-168</b-button>
         </b-button-group>
       </div>
 
       <div id="rabbit-group" class="w-responsive text-center mx-auto p-3 mt-2">
         <b-button-group>
-          <b-button @click="setData('Rabbit',128)" variant="outline-primary">Rabbit</b-button>
+          <b-button @click="setData('Rabbit',128)" :variant="selected == 128 ? 'primary' : 'outline-primary'">Rabbit</b-button>
         </b-button-group>
       </div>
     </div>
@@ -138,12 +138,14 @@ export default {
         payload: '',
         key: ''
       },
+      selected: null
     }
   },
   methods: {
     setData(name, keysize) {
       this.form.name = name;
       this.form.keysize = keysize;
+      this.selected = keysize;
     },
     setVal(name, val) {
       let f = this.form;

@@ -29,7 +29,7 @@ export default {
   methods: {
     initCipher(value) {
       const data = value;
-      console.log(value);
+      //console.log(value);
       //console.log(CryptoJS);
       if (value.encryption) { // encrypt
         this.Encrypt(data);
